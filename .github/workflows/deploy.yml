@@ -1,0 +1,40 @@
+name: run converter and deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  convert_and_deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Make convert.sh executable
+        run: chmod +x ./convert.sh
+
+      - name: Run convert.sh
+        run: ./convert.sh
+
+      - name: Create directory for deployment
+        run: mkdir -p output && mv index.html output/
+
+      - name: Upload index.html for deployment
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: output
+
+  deploy:
+    needs: convert_and_deploy
+    runs-on: ubuntu-22.04
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
