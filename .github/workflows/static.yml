@@ -3,7 +3,7 @@ name: Deploy static content to Pages
 
 on:
   workflow_run:
-    workflows: ["Convert README.md to index.html"]
+    workflows: ["Convert Readme"]
     types:
       - completed
 

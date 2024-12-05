@@ -1,5 +1,4 @@
-name: Deploy GitHub Pages
-
+name: Convert Readme
 on:
   push:
     branches:
